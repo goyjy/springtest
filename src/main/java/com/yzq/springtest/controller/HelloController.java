@@ -5,23 +5,41 @@ import com.yzq.springtest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HelloController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("hello")
-    @ResponseBody
-    public String hello(){
-        List<User> users = userService.findByUsernameLike("伍");
-        for(User u:users){
-            System.out.println(u);
+    @RequestMapping(value = "hello")
+    public String hello(Map<String, Object> map){
+        User user = userService.findOne(1);
+        map.put("user",user);
+        System.out.println(user);
+        return "index";
+    }
+
+    @RequestMapping(value="toLogin")
+    public String toLogin(Map<String, Object> map){
+        User user = new User();
+        user.setUsername("");
+        map.put("user",user);
+        return "login";
+    }
+
+    @RequestMapping(value="login")
+    public String login(Map<String, Object> map,User user){
+        User u = userService.findByUsername(user.getUsername());
+        if (u != null) {
+            if(u.getPassword().equals(user.getPassword())){
+                map.put("user",u);
+                return "index";
+            }
         }
-        return "伍欣怡";
+        map.put("error","登录失败");
+        return "login";
     }
 
 }

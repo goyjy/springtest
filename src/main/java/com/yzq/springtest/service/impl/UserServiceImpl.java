@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -36,12 +35,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findOne(Integer id) {
-        return userDao.findById(id);
+    public User findOne(Integer id) {
+        return userDao.getOne(id);
     }
 
     @Override
     public List<User> findByUsernameLike(String username) {
         return userNameDao.findByUsernameLike("%"+username+"%");
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userNameDao.findByUsername(username);
     }
 }
