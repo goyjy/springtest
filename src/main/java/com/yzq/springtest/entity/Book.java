@@ -1,18 +1,18 @@
 package com.yzq.springtest.entity;
 
-import javax.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
 @Table(name="book")
+@JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})
 public class Book {
 
     @Id
@@ -22,17 +22,15 @@ public class Book {
     private String name;
     @Column(name = "date")
     private Date date;
+    @Column(name="user_id")
+    private int user_id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name="user_id", referencedColumnName="id")//外键为sut_id，与student中的id关联
-    private User user;
-
-    public User getUser() {
-        return user;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public int getId() {
@@ -65,7 +63,7 @@ public class Book {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", date=" + date +
-                ", user=" + user +
+                ", user_id=" + user_id +
                 '}';
     }
 }

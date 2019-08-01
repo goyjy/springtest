@@ -1,11 +1,15 @@
 package com.yzq.springtest.entity;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})
 public class User {
 
     @Id
@@ -17,16 +21,7 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Book> books = new HashSet<Book>();
 
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
 
     public int getId() {
         return id;
@@ -67,7 +62,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", address='" + address + '\'' +
-                ", books=" + books +
                 '}';
     }
 }

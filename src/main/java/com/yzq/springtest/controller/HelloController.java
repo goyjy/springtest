@@ -4,7 +4,10 @@ import com.yzq.springtest.entity.User;
 import com.yzq.springtest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -13,12 +16,11 @@ public class HelloController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "hello")
-    public String hello(Map<String, Object> map){
-        User user = userService.findOne(1);
-        map.put("user",user);
-        System.out.println(user);
-        return "index";
+    @RequestMapping(value ="hello/{id}")
+    @ResponseBody
+    public User hello(@PathVariable int id){
+        User user = userService.findOne(id);
+        return user;
     }
 
     @RequestMapping(value="toLogin")
@@ -29,7 +31,7 @@ public class HelloController {
         return "login";
     }
 
-    @RequestMapping(value="login")
+    @RequestMapping(value="login",method = RequestMethod.GET)
     public String login(Map<String, Object> map,User user){
         User u = userService.findByUsername(user.getUsername());
         if (u != null) {
@@ -40,6 +42,11 @@ public class HelloController {
         }
         map.put("error","登录失败");
         return "login";
+    }
+
+    @RequestMapping(value="login",method = RequestMethod.PUT)
+    public String put(){
+        return "put方法";
     }
 
 }
